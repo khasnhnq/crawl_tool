@@ -1,12 +1,12 @@
 # File: test_case_textbox.py
 
 """
-Test Case: Submit Text Box form with valid inputs
+Test Case: Gửi form Text Box với dữ liệu khác
 Steps:
 1. Truy cập trang https://demoqa.com/text-box
-2. Nhập đầy đủ thông tin hợp lệ
-3. Nhấn Submit
-4. Kiểm tra kết quả hiển thị đúng
+2. Nhập dữ liệu mới vào các trường
+3. Nhấn nút Submit
+4. Kiểm tra từng dòng kết quả hiển thị
 """
 
 from selenium import webdriver
@@ -16,20 +16,23 @@ import time
 driver = webdriver.Chrome()
 driver.get("https://demoqa.com/text-box")
 
-# Điền thông tin
-driver.find_element(By.ID, "userName").send_keys("Nguyen Van A")
-driver.find_element(By.ID, "userEmail").send_keys("email@example.com")
-driver.find_element(By.ID, "currentAddress").send_keys("123 Main Street")
-driver.find_element(By.ID, "permanentAddress").send_keys("456 Another Street")
+# Nhập thông tin khác
+driver.find_element(By.ID, "userName").send_keys("Tran Thi B")
+driver.find_element(By.ID, "userEmail").send_keys("tranthib@example.com")
+driver.find_element(By.ID, "currentAddress").send_keys("789 Quang Trung")
+driver.find_element(By.ID, "permanentAddress").send_keys("101 Le Loi")
 
-# Submit form
+# Submit
 driver.find_element(By.ID, "submit").click()
 time.sleep(2)
 
-# Kiểm tra output
-output = driver.find_element(By.ID, "output").text
-assert "Nguyen Van A" in output
-assert "email@example.com" in output
-print("✅ TC Passed")
+# Kiểm tra kết quả từng dòng
+name_result = driver.find_element(By.ID, "name").text
+email_result = driver.find_element(By.ID, "email").text
+
+assert "Tran Thi B" in name_result
+assert "tranthib@example.com" in email_result
+
+print("✅ Test case với dữ liệu khác đã pass!")
 
 driver.quit()
