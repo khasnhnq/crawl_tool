@@ -8,23 +8,20 @@ from webdriver_manager.chrome import ChromeDriverManager
 import csv
 
 def crawl_vnexpress_science():
-    # Cấu hình trình duyệt Chrome chạy ở chế độ không giao diện
     options = Options()
     options.add_argument("--headless")  # Chạy không giao diện
     options.add_argument("--disable-gpu")
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
-    options.add_argument(
-        "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36"
-    )
+    options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36")
 
     # Khởi tạo trình điều khiển Chrome
     service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service, options=options)
-
+    
     url = "https://vnexpress.net/khoa-hoc"
     driver.get(url)
-
+    
     try:
         # Chờ trang tải và tìm danh sách bài viết
         wait = WebDriverWait(driver, 10)
@@ -38,12 +35,8 @@ def crawl_vnexpress_science():
                 title = title_element.text.strip()
                 link = title_element.get_attribute("href")
 
-                # Kiểm tra sự tồn tại của mô tả bài viết
-                try:
-                    description_element = article.find_element(By.CSS_SELECTOR, ".description")
-                    description = description_element.text.strip() if description_element else ""
-                except Exception:
-                    description = ""  # Nếu không tìm thấy mô tả, để trống
+                description_element = article.find_element(By.CSS_SELECTOR, ".description")
+                description = description_element.text.strip() if description_element else ""
 
                 article_data.append({"title": title, "link": link, "description": description})
             except Exception as e:
